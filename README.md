@@ -5,13 +5,13 @@
 
 ---
 
-## 📋 Executive Summary
+## Executive Summary
 
 This project demonstrates a production-grade, fully local RAG implementation designed for simple academic texts. By decoupling retrieval inspection (/chunks) from generation, enforcing strict metadata schemas (Chapter, Subsection, Page Ranges), and parsing raw model reasoning tokens live in the CLI, the pipeline delivers complete transparency, zero data leakage, and high citation fidelity without relying on cloud APIs.
 
 ---
 
-## 🎯 Assumptions & Design Principles
+## Assumptions & Design Principles
 
 1. **100% Offline & Private Capability**: No external API calls (OpenAI, Anthropic, etc.). All vector embeddings and LLM generations run locally on the user's hardware via Ollama and embedded Qdrant.
 2. **Structural Page-Bound Chunking**: Generic character-count splitters break mid-sentence and lose citation context. The ingestion layer assumes strict page boundaries and metadata tracking so every retrieved chunk carries explicit `start_page` and `end_page` attributes.
@@ -19,7 +19,7 @@ This project demonstrates a production-grade, fully local RAG implementation des
 4. **Reasoning Transparency over Black-Box Answers**: Reasoning models like `qwen3:4b` generate step-by-step internal thoughts before answering. The system explicitly separates and streams this thinking process (`<think>` tags or native `thinking` fields) so users can verify *how* the model reached its conclusion based on retrieved contexts.
 
 ---
-## 📑 Deep Dive: Chunking Policy & Ingestion Strategy
+## Deep Dive: Chunking Policy & Ingestion Strategy
 
 Standard RAG implementations often rely on naive, character-count splitters (e.g., fixed 500-token windows with 50-token overlaps). In academic texts, naive splitting breaks logical arguments mid-sentence and strips away vital source metadata. Our pipeline uses a **structurally grounded, page-bound chunking strategy**:
 
@@ -44,7 +44,7 @@ Because every chunk retains its exact structural metadata, `rag_generator.py` in
 
 
 
-## 🏗️ Project Architecture & File Structure
+## Project Architecture & File Structure
 
 ```text
 .
@@ -79,7 +79,7 @@ Because every chunk retains its exact structural metadata, `rag_generator.py` in
 
 ---
 
-## 🛠️ Tech Stack & Dependencies
+## Tech Stack & Dependencies
 
 * **Language & Runtime**: Python 3.10+
 * **PDF Processing**: `PyMuPDF` (`fitz`)
@@ -90,7 +90,7 @@ Because every chunk retains its exact structural metadata, `rag_generator.py` in
 
 ---
 
-## 🚀 Setup & Installation
+## Setup & Installation
 
 ### 1. Prerequisites
 
@@ -138,7 +138,7 @@ python main.py
 
 ---
 
-## 🧪 Verified Test Execution Report
+## Verified Test Execution Report
 
 The following log demonstrates a real end-to-end execution of the system queried about the **Zaydis**, showcasing context retrieval, live reasoning parsing, and final citation-grounded response generation:
 
@@ -204,7 +204,7 @@ The text also notes that there were shorter-lived Zaydi states elsewhere in the 
 
 ---
 
-## ⚡ Key Takeaways from System Execution
+## Key Takeaways from System Execution
 
 1. **Zero Hallucination Tolerance**: The LLM's internal thinking process shows it deliberately analyzing and extracting facts strictly present in Context Blocks 1–3 before outputting text.
 2. **Metadata Integrity**: Citations naturally reflect precise metadata embedded during text extraction (`Pages 18-19`, `Authority Structures...`).
